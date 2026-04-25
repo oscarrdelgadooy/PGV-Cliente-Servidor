@@ -1,0 +1,35 @@
+gitignore_content = """# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Build tools
+target/
+bin/
+.gradle/
+build/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+gen/
+
+# Eclipse
+.settings/
+.project
+.classpath
+.factorypath
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.log
+"""
+
+with open(".gitignore", "w") as f:
+    f.write(gitignore_content)
