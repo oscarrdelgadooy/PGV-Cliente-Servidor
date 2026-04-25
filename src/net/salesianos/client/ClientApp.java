@@ -31,20 +31,21 @@ public class ClientApp {
             while (true) {
                 System.out.print("Tu puja -> ");
                 String input = scanner.nextLine();
+                
                 try {
                     Double.parseDouble(input);
                     outputStream.writeUTF(input);
                     outputStream.flush();
                 } catch (NumberFormatException nfe) {
                     System.out.println("[NumberFormatE.] Hay que introducir un número valido (ej: 150.5).");
-                }catch (IOException ioe) {
+                } catch (IOException ioe) {
                     System.out.println("[IOE] Error al enviar la puja: " + ioe.getMessage());
-                }catch (IllegalStateException itse) {
+                } catch (IllegalStateException itse) {
                     System.out.println("[IllegalThreadStateE.] Error scanner cerrado: " + itse.getMessage());
                 }
             }
         } catch (IOException ioe) {
-            System.out.println("[IOE] No se pudo conectar" + ioe.getMessage());
+            System.out.println("[IOE] No se pudo conectar: " + ioe.getMessage());
         } catch (IllegalThreadStateException itse) {
             System.out.println("[IllegalThreadStateE.] Error hilo ya empezado: " + itse.getMessage());
         } finally {

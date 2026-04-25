@@ -27,9 +27,9 @@ public class ClientHandler extends Thread {
                 double puja = Double.parseDouble(mensaje);
 
                 if (ServerApp.procesarPuja(puja, nombre)) {
-                    broadcast("¡NUEVA PUJA! " + nombre + " ha pujado " + puja + "€");
+                    broadcast("¡NUEVA PUJA! " + nombre + " ha pujado " + puja + " totis.");
                 } else {
-                    out.writeUTF("Tu puja de " + puja + "€ es demasiado baja. Mínimo: " + ServerApp.precioActual);
+                    out.writeUTF("Tu puja de " + puja + " totis es demasiado baja. Mínimo: " + ServerApp.precioActual);
                     out.flush();
                 }
             }
@@ -37,7 +37,7 @@ public class ClientHandler extends Thread {
             System.out.println(nombre + " ha abandonado la subasta.");
         } finally {
             listaClientes.remove(out);
-            broadcast(nombre + " se ha ido. El precio sigue en " + ServerApp.precioActual + "€");
+            broadcast(nombre + " se ha ido. El precio sigue en " + ServerApp.precioActual + " totis");
         }
     }
 

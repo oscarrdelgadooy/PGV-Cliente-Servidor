@@ -13,10 +13,9 @@ public class ServerListener extends Thread {
     @Override
     public void run() {
         try {
-            System.out.print("Tu puja -> ");
             while (true) {
                 String serverMessage = this.inputStream.readUTF();
-                System.out.println("\n[SUBASTA] " + serverMessage);
+                System.out.println("\n[ANUNCIO] " + serverMessage);
                 System.out.print("Tu puja -> ");
             }
         } catch (IOException e) {
