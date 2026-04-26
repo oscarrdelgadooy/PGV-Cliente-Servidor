@@ -9,33 +9,22 @@ public class FilterChain {
     public static boolean filter_chain(String input, DataOutputStream out) throws IOException {
         input = input.trim().toLowerCase();
 
-        if (input.equals("salir")) {
-            return false;
-        }
-
         if (input.isEmpty()) {
             System.out.print("Tu puja -> ");
             return true;
         }
 
-        if (input.equals("precio")) {
-            out.writeUTF("COMANDO_PRECIO");
-            out.flush();
-            return true;
+        if (input.equals("salir")) {
+            return false;
         }
 
-        if (input.equals("ganador")) {
-            out.writeUTF("COMANDO_GANADOR");
-            out.flush();
-            return true;
+        for (String command : Constants.CMD_COMMANDS) {
+            if (input.equals(command)) {
+                out.writeUTF("COMANDO_" + command.toUpperCase());
+                out.flush();
+                return true;
+            }
         }
-
-        if (input.equals("ayuda")) {
-            out.writeUTF("COMANDO_AYUDA");
-            out.flush();
-            return true;
-        }
-
         try {
             Double.parseDouble(input);
             out.writeUTF(input);
@@ -43,8 +32,8 @@ public class FilterChain {
         } catch (NumberFormatException nfe) {
             System.out.println(
                     "[ERROR] Entrada inválida. Usa números para pujar, 'precio', 'ganador', 'ayuda' o 'salir'.");
+            System.out.print("Tu puja -> ");
         }
-
         return true;
     }
 
