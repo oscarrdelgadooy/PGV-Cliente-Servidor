@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 import net.salesianos.client.thread.ServerListener;
 import net.salesianos.utils.Constants;
+import net.salesianos.utils.FilterChain;
 
 public class ClientApp {
     public static void main(String[] args) {
@@ -26,16 +27,15 @@ public class ClientApp {
             ServerListener listener = new ServerListener(inputStream);
             listener.start();
 
-            System.out.println("Conectado! Introduce tu puja (número):");
+            System.out.println("Conectado! Disfruta de tu estancia:");
 
+            System.out.print("Tu puja -> ");
             while (true) {
-                System.out.print("Tu puja -> ");
                 String input = scanner.nextLine();
-                
                 try {
-                    Double.parseDouble(input);
-                    outputStream.writeUTF(input);
-                    outputStream.flush();
+                    if (!FilterChain.filter_chain(input, outputStream)) {
+                        break;
+                    }
                 } catch (NumberFormatException nfe) {
                     System.out.println("[NumberFormatE.] Hay que introducir un número valido (ej: 150.5).");
                 } catch (IOException ioe) {

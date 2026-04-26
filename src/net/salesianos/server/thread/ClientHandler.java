@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import net.salesianos.server.ServerApp;
+import net.salesianos.utils.FilterChain;
 
 public class ClientHandler extends Thread {
     private DataInputStream in;
@@ -24,6 +25,11 @@ public class ClientHandler extends Thread {
         try {
             while (true) {
                 String mensaje = in.readUTF();
+
+                if (mensaje.startsWith("COMANDO_")) {
+                    FilterChain.procesarComando(mensaje, out);
+                    continue;
+                }
                 double puja = Double.parseDouble(mensaje);
 
                 if (ServerApp.procesarPuja(puja, nombre)) {
