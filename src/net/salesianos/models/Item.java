@@ -35,7 +35,7 @@ public class Item {
         String separador = "╠════════════════════════════════════════════════════════════╣\n";
         String bordeInf = "╚════════════════════════════════════════════════════════════╝";
 
-        String prefijo = isLegendary ? "★ LEGENDARIO ★ " : "";
+        String prefijo = isLegendary ? "|| LEGENDARIO || " : "";
 
         String lineaNombre = String.format("║ LOTE: %-52s ║\n", prefijo + nombre);
         String lineaPrecio = String.format("║ PRECIO: %-50s ║\n", precioSalida + " totis");

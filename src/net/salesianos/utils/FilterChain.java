@@ -3,9 +3,8 @@ package net.salesianos.utils;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.salesianos.server.ServerApp;
-
 public class FilterChain {
+
     public static boolean filter_chain(String input, DataOutputStream out) throws IOException {
         input = input.trim().toLowerCase();
 
@@ -37,13 +36,13 @@ public class FilterChain {
         return true;
     }
 
-    public static void procesarComando(String comando, DataOutputStream out) throws IOException {
+    public static void procesarComando(String comando, DataOutputStream out, AuctionState auctionState) throws IOException {
         switch (comando) {
             case "COMANDO_PRECIO":
-                out.writeUTF("El precio actual es: " + ServerApp.precioActual + " totis.");
+                out.writeUTF("El precio actual es: " + auctionState.getPrecioActual() + " totis.");
                 break;
             case "COMANDO_GANADOR":
-                out.writeUTF("El ganador actual es: " + ServerApp.ganadorActual);
+                out.writeUTF("El ganador actual es: " + auctionState.getGanadorActual());
                 break;
             case "COMANDO_AYUDA":
                 out.writeUTF(

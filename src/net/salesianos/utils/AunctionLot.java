@@ -15,7 +15,7 @@ public class AunctionLot {
         if (actualIndex < inventory.length) {
             return inventory[actualIndex];
         }
-        return null; 
+        return null;
     }
 
     public boolean nextItemBet() {
