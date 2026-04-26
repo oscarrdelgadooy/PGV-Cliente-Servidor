@@ -9,12 +9,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import net.salesianos.models.Item;
 import net.salesianos.server.thread.ClientHandler;
+import net.salesianos.utils.AunctionLot;
 import net.salesianos.utils.Constants;
 
 public class ServerApp {
+    private static AunctionLot aunctionLot = new AunctionLot();
 
-    public static double precioActual = Constants.PRECIO_INICIAL;
+    public static Item itemActual = aunctionLot.getOneItem();
+
+    public static double precioActual = itemActual.getPrecioSalida();
     public static String ganadorActual = "Nadie";
 
     public static void main(String[] args) {
@@ -23,16 +28,19 @@ public class ServerApp {
 
             ArrayList<DataOutputStream> clientsOutputs = new ArrayList<>();
 
+            System.out.println(itemActual.toString());
+            System.out.println("Esperando nuevos postores...");
             while (true) {
-                System.out.println("Esperando nuevos postores...");
                 Socket clientSocket = serverSocket.accept();
 
-                DataOutputStream clientOutputStream = new DataOutputStream(new BufferedOutputStream(clientSocket.getOutputStream()));
+                DataOutputStream clientOutputStream = new DataOutputStream(
+                        new BufferedOutputStream(clientSocket.getOutputStream()));
                 clientsOutputs.add(clientOutputStream);
 
-                DataInputStream clientInputStream = new DataInputStream(new BufferedInputStream(clientSocket.getInputStream()));
+                DataInputStream clientInputStream = new DataInputStream(
+                        new BufferedInputStream(clientSocket.getInputStream()));
                 String name = clientInputStream.readUTF();
-                
+
                 System.out.println(name + " ha entrado a la subasta.");
 
                 ClientHandler clientHandler = new ClientHandler(clientInputStream, name, clientsOutputs);

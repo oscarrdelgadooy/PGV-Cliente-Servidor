@@ -11,11 +11,11 @@ public class AunctionLot {
         this.actualIndex = 0;
     }
 
-    public Item getItemActual() {
+    public Item getOneItem() {
         if (actualIndex < inventory.length) {
             return inventory[actualIndex];
         }
-        return null;
+        return null; 
     }
 
     public boolean nextItemBet() {
