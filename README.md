@@ -28,3 +28,5 @@ Desde la ruta de la aplicación:
 2. Conectar uno o varios clientes: `java -cp bin net.salesianos.client.ClientApp`
 
 [Server](/src/net/salesianos/server/README_SERVER.md)
+
+[Client](/src/net/salesianos/client/README_CLIENT.md)
