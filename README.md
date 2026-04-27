@@ -10,7 +10,7 @@ Se ha implementado un Sistema de Subastas en Tiempo Real. En este escenario, mú
 
 | Rol          | Descripción de Funciones                                                                                                                                                                                                            |
 | :----------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Servidor** | • Gestiona el ciclo de vida de los lotes.<br>• Escucha conexiones entrantes en el puerto 8080.<br>• Sincroniza el estado global (precio/ganador) entre todos los hilos.<br>• Implementa un temporizador automático de adjudicación. |
+| **Servidor** | • Gestiona el ciclo de vida de los lotes.<br>• Escucha conexiones entrantes en el puerto 5000.<br>• Sincroniza el estado global (precio/ganador) entre todos los hilos.<br>• Implementa un temporizador automático de adjudicación. |
 | **Cliente**  | • Proporciona la interfaz de usuario por consola.<br>• Filtra y valida las entradas antes del envío.<br>• Escucha de forma asíncrona las actualizaciones del servidor.<br>• Gestiona el cierre limpio de la sesión.                 |
 
 ## Clases y Librerías Java Empleadas
@@ -26,3 +26,5 @@ Desde la ruta de la aplicación:
 
 1. Iniciar el servidor: `java -cp bin net.salesianos.server.ServerApp`
 2. Conectar uno o varios clientes: `java -cp bin net.salesianos.client.ClientApp`
+
+[Server](/src/net/salesianos/server/README_SERVER.md)
