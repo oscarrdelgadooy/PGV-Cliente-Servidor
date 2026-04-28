@@ -69,19 +69,35 @@ while (true) {
 
 ```java
 public class FilterChain {
-    public static String checkInput(String userInput) {
-        if (userInput.trim().isEmpty()) return "vacio";
+    public static boolean filter_chain(String input, DataOutputStream out) throws IOException {
+        input = input.trim().toLowerCase();
 
-        if (userInput.equalsIgnoreCase(Constants.CMD_AYUDA)) {
-            return "comando";
+        if (input.isEmpty()) {
+            System.out.print("Tu puja -> ");
+            return true;
         }
 
+        if (input.equals("salir")) {
+            return false;
+        }
+
+        for (String command : Constants.CMD_COMMANDS) {
+            if (input.equals(command)) {
+                out.writeUTF("COMANDO_" + command.toUpperCase());
+                out.flush();
+                return true;
+            }
+        }
         try {
-            Double.parseDouble(userInput);
-            return "valido";
-        } catch (NumberFormatException e) {
-            return "error";
+            Double.parseDouble(input);
+            out.writeUTF(input);
+            out.flush();
+        } catch (NumberFormatException nfe) {
+            System.out.println(
+                    "[ERROR] Entrada inválida. Usa números para pujar, 'precio', 'ganador', 'ayuda' o 'salir'.");
+            System.out.print("Tu puja -> ");
         }
+        return true;
     }
 }
 ```
