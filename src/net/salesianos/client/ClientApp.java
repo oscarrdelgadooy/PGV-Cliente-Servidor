@@ -6,9 +6,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.security.PublicKey;
 import java.util.Scanner;
 
 import net.salesianos.client.thread.ServerListener;
+import net.salesianos.config.AsymmetricCipher;
 import net.salesianos.utils.Constants;
 import net.salesianos.utils.FilterChain;
 
@@ -20,10 +22,15 @@ public class ClientApp {
 
         try (Socket socket = new Socket("localhost", Constants.SERVER_PORT)) {
             DataOutputStream outputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-            outputStream.writeUTF(name);
+            DataInputStream inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+
+            String serverPubKeyString = inputStream.readUTF();
+            PublicKey serverPublicKey = AsymmetricCipher.getPublicKeyFromString(serverPubKeyString);
+
+            String nombreCifrado = AsymmetricCipher.encrypt(name, serverPublicKey);
+            outputStream.writeUTF(nombreCifrado);
             outputStream.flush();
 
-            DataInputStream inputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             ServerListener listener = new ServerListener(inputStream);
             listener.start();
 
@@ -33,7 +40,7 @@ public class ClientApp {
             while (true) {
                 String input = scanner.nextLine();
                 try {
-                    if (!FilterChain.filter_chain(input, outputStream)) {
+                    if (!FilterChain.filter_chain(input, outputStream, serverPublicKey)) {
                         break;
                     }
                 } catch (NumberFormatException nfe) {
@@ -48,6 +55,8 @@ public class ClientApp {
             System.out.println("[IOE] No se pudo conectar: " + ioe.getMessage());
         } catch (IllegalThreadStateException itse) {
             System.out.println("[IllegalThreadStateE.] Error hilo ya empezado: " + itse.getMessage());
+        } catch (Exception e) {
+            System.out.println("[Error] No se pudo enviar el mensaje." + e.getMessage());
         } finally {
             scanner.close();
             System.out.println("Has abandonado la sala de subastas.");

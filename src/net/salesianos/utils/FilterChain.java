@@ -2,41 +2,56 @@ package net.salesianos.utils;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.security.PublicKey;
+
+import net.salesianos.config.AsymmetricCipher;
 
 public class FilterChain {
 
-    public static boolean filter_chain(String input, DataOutputStream out) throws IOException {
-        input = input.trim().toLowerCase();
+    public static boolean filter_chain(String input, DataOutputStream out, PublicKey serverPublicKey)
+            throws IOException {
+        try {
 
-        if (input.isEmpty()) {
+            input = input.trim().toLowerCase();
+
+            if (input.isEmpty()) {
+                System.out.print("Tu puja -> ");
+                return true;
+            }
+
+            if (input.equals("salir")) {
+                return false;
+            }
+
+            for (String command : Constants.CMD_COMMANDS) {
+                if (input.equals(command)) {
+                    String commandCifrado = AsymmetricCipher.encrypt("COMANDO_" + command.toUpperCase(),
+                            serverPublicKey);
+                    out.writeUTF(commandCifrado);
+                    out.flush();
+                    return true;
+                }
+            }
+            try {
+                Double.parseDouble(input);
+                String inputCifrado = AsymmetricCipher.encrypt(input, serverPublicKey);
+                out.writeUTF(inputCifrado);
+                out.flush();
+            } catch (NumberFormatException nfe) {
+                System.out.println(
+                        "[ERROR] Entrada inválida. Usa números para pujar, 'precio', 'ganador', 'ayuda' o 'salir'.");
+                System.out.print("Tu puja -> ");
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println("[Error] No se pudo procesar la entrada." + e.getMessage());
             System.out.print("Tu puja -> ");
             return true;
         }
-
-        if (input.equals("salir")) {
-            return false;
-        }
-
-        for (String command : Constants.CMD_COMMANDS) {
-            if (input.equals(command)) {
-                out.writeUTF("COMANDO_" + command.toUpperCase());
-                out.flush();
-                return true;
-            }
-        }
-        try {
-            Double.parseDouble(input);
-            out.writeUTF(input);
-            out.flush();
-        } catch (NumberFormatException nfe) {
-            System.out.println(
-                    "[ERROR] Entrada inválida. Usa números para pujar, 'precio', 'ganador', 'ayuda' o 'salir'.");
-            System.out.print("Tu puja -> ");
-        }
-        return true;
     }
 
-    public static void procesarComando(String comando, DataOutputStream out, AuctionState auctionState) throws IOException {
+    public static void procesarComando(String comando, DataOutputStream out, AuctionState auctionState)
+            throws IOException {
         switch (comando) {
             case "COMANDO_PRECIO":
                 out.writeUTF("El precio actual es: " + auctionState.getPrecioActual() + " totis.");
