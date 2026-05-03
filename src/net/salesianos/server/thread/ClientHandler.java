@@ -3,6 +3,9 @@ package net.salesianos.server.thread;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.security.KeyPair;
+
+import net.salesianos.config.AsymmetricCipher;
 import net.salesianos.utils.AuctionState;
 import net.salesianos.utils.FilterChain;
 
@@ -11,20 +14,34 @@ public class ClientHandler extends Thread {
     private DataOutputStream out;
     private String nombre;
     private AuctionState auctionState;
+    private KeyPair serverKeys;
 
-    public ClientHandler(DataInputStream in, String nombre, AuctionState auctionState) {
+    public ClientHandler(DataInputStream in, DataOutputStream out, AuctionState auctionState, KeyPair serverKeys) {
         this.in = in;
-        this.nombre = nombre;
+        this.out = out;
         this.auctionState = auctionState;
-        this.out = auctionState.getClients().get(auctionState.getClients().size() - 1);
-        broadcast(auctionState.getItemActual().toString());
+        this.serverKeys = serverKeys;
     }
 
     @Override
     public void run() {
         try {
+            String publicKeyBase64 = java.util.Base64.getEncoder().encodeToString(serverKeys.getPublic().getEncoded());
+            out.writeUTF(publicKeyBase64);
+            out.flush();
+
+            String nombreCifrado = in.readUTF();
+            this.nombre = AsymmetricCipher.decrypt(nombreCifrado, serverKeys.getPrivate());
+
+            System.out.println(this.nombre + " ha entrado a la subasta (Conexión Segura).");
+
+            out.writeUTF(auctionState.getItemActual().toString());
+            out.flush();
+
             while (true) {
-                String mensaje = in.readUTF();
+                String codedMessage = in.readUTF();
+
+                String mensaje = AsymmetricCipher.decrypt(codedMessage, serverKeys.getPrivate());
 
                 if (mensaje.startsWith("COMANDO_")) {
                     FilterChain.procesarComando(mensaje, out, auctionState);
@@ -35,15 +52,21 @@ public class ClientHandler extends Thread {
                 if (auctionState.procesarPuja(puja, nombre)) {
                     broadcast("¡NUEVA PUJA! " + nombre + " ha pujado " + puja + " totis.");
                 } else {
-                    out.writeUTF("Tu puja de " + puja + " totis es demasiado baja. Mínimo: " + auctionState.getPrecioActual());
+                    out.writeUTF("Tu puja de " + puja + " totis es demasiado baja. Mínimo: "
+                            + auctionState.getPrecioActual());
                     out.flush();
                 }
             }
         } catch (IOException e) {
-            System.out.println(nombre + " ha abandonado la subasta.");
+            System.out.println(nombre + " ha abandonado la subasta abruptamente.");
+        } catch (Exception e) {
+            System.out.println("Error de descifrado o seguridad con " + nombre + ": " + e.getMessage());
         } finally {
             auctionState.getClients().remove(out);
-            broadcast(nombre + " se ha ido. El precio sigue en " + auctionState.getPrecioActual() + " totis");
+            if (nombre != null) {
+                broadcast(nombre + " se ha desconectado. El precio sigue en " + auctionState.getPrecioActual()
+                        + " totis");
+            }
         }
     }
 
