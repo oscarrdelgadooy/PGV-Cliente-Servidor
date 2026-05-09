@@ -50,22 +50,28 @@ public class FilterChain {
         }
     }
 
-    public static void procesarComando(String comando, DataOutputStream out, AuctionState auctionState)
-            throws IOException {
-        switch (comando) {
-            case "COMANDO_PRECIO":
-                out.writeUTF("El precio actual es: " + auctionState.getPrecioActual() + " totis.");
-                break;
-            case "COMANDO_GANADOR":
-                out.writeUTF("El ganador actual es: " + auctionState.getGanadorActual());
-                break;
-            case "COMANDO_AYUDA":
-                out.writeUTF(
-                        "Comandos disponibles:\n- precio: Muestra el precio actual.\n- ganador: Muestra el ganador actual.\n- salir: Abandona la subasta.");
-                break;
-            default:
-                out.writeUTF("Comando desconocido.");
+    public static void procesarComando(String comando, DataOutputStream out, AuctionState auctionState) throws IOException {
+        try {
+            switch (comando) {
+                case "COMANDO_PRECIO":
+                    out.writeUTF("El precio actual es: " + auctionState.getPrecioActual() + " totis.");
+                    break;
+                case "COMANDO_GANADOR":
+                    out.writeUTF("El ganador actual es: " + auctionState.getGanadorActual());
+                    break;
+                case "COMANDO_AYUDA":
+                    out.writeUTF(
+                            "Comandos disponibles:\n- precio: Muestra el precio actual.\n- ganador: Muestra el ganador actual.\n- salir: Abandona la subasta.");
+                    break;
+                default:
+                    out.writeUTF("Comando desconocido.");
+            }
+        } catch (IOException ioe) {
+            System.out.println("[IOE] Error al enviar la respuesta del comando: " + ioe.getMessage());
+        } catch (Exception e) {
+            System.out.println("[Error] No se pudo procesar el comando." + e.getMessage());
+        } finally {
+            out.flush();
         }
-        out.flush();
     }
 }
