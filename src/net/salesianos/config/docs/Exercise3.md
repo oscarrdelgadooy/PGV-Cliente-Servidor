@@ -59,3 +59,5 @@ Emisión desde el Cliente: Cualquier dato introducido por el usuario (nombre, co
 
 **Decisión de Diseño: Cifrado Selectivo**  
 Se ha optado por un modelo de seguridad eficiente. Las vías de subida (acciones del postor) están estrictamente cifradas para evitar suplantaciones de identidad y espionaje. Sin embargo, los **broadcasts** del servidor (anuncios de lotes, precios actuales o avisos del temporizador) se transmiten en texto plano. Esto optimiza los recursos de la red al tratar dichos mensajes como información pública inherente al estado de la subasta, cumpliendo con la protección de los datos sin sobrecargar el procesamiento del cliente.
+
+[Volver](../../../../../README.md)

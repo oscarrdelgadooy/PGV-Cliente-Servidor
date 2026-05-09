@@ -7,8 +7,10 @@ Primeramente, se debe iniciar la **aplicación servidor y un cliente** en un ent
 
 Luego, se configura la app **Wireshark** para interceptar el tráfico en la interfaz de bucle local **(Loopback / lo0).** Aquí podremos interceptar todos los paquetes que se comunican en la red interna del ordenador. Se aplicó el filtro de red ***tcp.port \== 5000*** (puerto del servidor) para aislar exclusivamente los paquetes de la subasta.
 
-![paquetes sin cifrado](image.png)
+![paquetes sin cifrado](image.jpeg)
 
-Como se puede observar en el flujo TCP extraído por Wireshark, el contenido de la comunicación es **completamente** legible(aposté como 99999999999..., por eso se ve en notación cientifica). Se distinguen con claridad parámetros sensibles como el nombre del postor, los montos de las pujas y las notificaciones del servidor.
+Como se puede observar en el flujo TCP extraído por Wireshark, el contenido de la comunicación es **completamente** legible. Se distinguen con claridad la apuesta del cliente con puerto asignado **57493**.
 
 Al carecer de cifrado, el sistema incumple los principios básicos de seguridad en la transmisión de información. Cualquier atacante posicionado en la misma red podría ejecutar un ataque de intermediario (**Man-in-the-Middle**) o realizar espionaje pasivo (**Sniffing**) para comprometer la integridad y privacidad de la subasta en texto plano.
+
+[Volver](../../../../../README.md)

@@ -30,3 +30,11 @@ Desde la ruta de la aplicación:
 [Server](/src/net/salesianos/server/README_SERVER.md)
 
 [Client](/src/net/salesianos/client/README_CLIENT.md)
+
+**Seguridad con Wireshark**
+
+- Ejercicio 1: [Link](src/net/salesianos/config/docs/Exercise1.md)
+- Ejercicio 2: [Link](src/net/salesianos/config/docs/Exercise2.md)
+- Ejercicio 3: [Link](src/net/salesianos/config/docs/Exercise3.md)
+- Ejercicio 4: [Link](src/net/salesianos/config/docs/Exercise4.md)
+- Ejercicio 5: [Link](src/net/salesianos/config/docs/Exercise5.md)

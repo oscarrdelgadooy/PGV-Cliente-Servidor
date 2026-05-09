@@ -27,3 +27,5 @@ Sin acceso a la **Clave Privada** (la cual nunca sale de la memoria volátil del
 ## Conclusión de la fase de auditoría
 
 La transición de un protocolo de texto plano a uno cifrado asimétricamente garantiza la **Confidencialidad** y la **Integridad** de la subasta. El sistema ahora cumple con los estándares básicos de comunicación segura en red, protegiendo los intereses tanto de la casa de subastas como de los postores.
+
+[Volver](../../../../../README.md)

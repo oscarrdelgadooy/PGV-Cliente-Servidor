@@ -25,3 +25,5 @@ Modificar la clase `FilterChain` para que actúe como un **Interceptor de Comand
 ---
 
 Este diseño asegura que, aunque un usuario logre conectar un cliente al socket, sus acciones estarán limitadas por su perfil, protegiendo la integridad de la subasta y la lógica de negocio.
+
+[Volver](../../../../../README.md)
